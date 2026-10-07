@@ -8,16 +8,16 @@ class ShipmentDetailsController:
         self._register_routes()
 
     def _register_routes(self) -> None:
-        self.router.add_api_route("/{shipment_id}", self.get_by_id, methods=["GET"])
-        self.router.add_api_route("", self.list_page, methods=["GET"])
+        self.router.add_api_route("/{shipment_id}", self.get_sd_by_id, methods=["GET"])
+        self.router.add_api_route("", self.get_sd_listings_by_page, methods=["GET"])
 
-    def get_by_id(self, shipment_id: str) -> dict:
+    def get_sd_by_id(self, shipment_id: str) -> dict:
         row = self.repository.get_shipment_details_by_id(shipment_id)
         if row is None:
             raise HTTPException(status_code=404, detail="Shipment not found")
         return row
 
-    def list_page(
+    def get_sd_listings_by_page(
         self,
         page: int = Query(1, ge=1),
         size: int = Query(20, ge=1, le=100),
